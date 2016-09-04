@@ -1,0 +1,56 @@
+{
+  "schema": {
+    "id": "$baseurl/form-schemas/record",
+    "$schema": "http://json-schema.org/schema#",
+    "name": "Feature Type",
+    "description": "Schema for a Record",
+    "type": "object",
+    "properties": {
+      "name": {
+        "title": "Name",
+        "description": "Record name",
+        "type": "string"
+      },
+      "prefix": {
+        "title": "Record Prefix",
+        "description": "Record type prefix",
+        "type": "string"
+      },
+      "description": {
+        "title": "Description",
+        "description": "Record description",
+        "type": "string"
+      },
+      "dataset": {
+        "title": "Dataset",
+        "description": "The record dataset.",
+        "type": "array",
+        "items": {
+          "$ref": "file-dataset.json"
+        }
+      },
+      "eventTypes": {
+        "title": "Event Types",
+        "description": "Event Types generated from this dataset.",
+        "type": "array",
+        "items": {
+          "$ref": "event-type.json"
+        }
+      }
+    }
+  },
+  "form": {
+    "description": {
+      "type": "textarea"
+    },
+    "dataset": {
+      "label": "name",
+      "source": "$ds1url/file-datasets"
+    },
+    "eventTypes": {
+      "label": "name",
+      "source": "$ds1url/event-types",
+      "type": "multiselect"
+    }
+  }
+}

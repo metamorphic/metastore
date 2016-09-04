@@ -1,0 +1,18 @@
+{
+  "schema": {
+    "id": "$baseurl/form-schemas/event-wizard-filename-pattern",
+    "$schema": "http://json-schema.org/schema#",
+    "name": "Feature Type",
+    "description": "Schema for the Event Wizard Filename Pattern",
+    "type": "object",
+    "properties": {
+      "filenamePattern": {
+        "title": "Filename Pattern",
+        "description": "Filename pattern of file to ingest",
+        "type": "string"
+      }
+    }
+  },
+  "form": {
+  }
+}

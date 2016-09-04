@@ -1,0 +1,58 @@
+{
+  "schema": {
+    "id": "$baseurl/form-schemas/event-property-type",
+    "$schema": "http://json-schema.org/schema#",
+    "name": "Event Property Type",
+    "description": "Schema for an Event Property Type",
+    "type": "object",
+    "properties": {
+      "name": {
+        "title": "Name",
+        "description": "Event Property Type name",
+        "type": "string"
+      },
+      "securityClassification": {
+        "title": "Security Classification",
+        "description": "Security classification of the event property.",
+        "type": "array",
+        "items": {
+          "$ref": "security-classification.json"
+        }
+      },
+      "valueType": {
+        "title": "Value Type",
+        "description": "The value type of the event property.",
+        "type": "array",
+        "items": {
+          "$ref": "value-type.json"
+        }
+      },
+      "description": {
+        "title": "Description",
+        "description": "Event Property Type description",
+        "type": "string"
+      },
+      "mappingExpression": {
+        "title": "Mapping Expression",
+        "description": "Maps one or more source columns to the property value using Spring Expression Language.",
+        "type": "string"
+      }
+    }
+  },
+  "form": {
+    "securityClassification": {
+      "label": "name",
+      "source": "$ds1url/security-classifications"
+    },
+    "valueType": {
+      "label": "name",
+      "source": "$ds1url/value-types"
+    },
+    "description": {
+      "type": "textarea"
+    },
+    "mappingExpression": {
+      "type": "textarea"
+    }
+  }
+}

@@ -1,0 +1,83 @@
+package metastore.utils;
+
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.databind.deser.ResolvableDeserializer;
+import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
+import metastore.models.Customizable;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import java.io.IOException;
+
+/**
+ * Created by markmo on 21/06/15.
+ */
+public class ItemDeserializer<T extends Customizable> extends StdDeserializer<T> implements ResolvableDeserializer {
+
+    private static final Log log = LogFactory.getLog(ItemDeserializer.class);
+
+    private static final long serialVersionUID = 7923585097068641765L;
+
+    private final JsonDeserializer<T> defaultDeserializer;
+
+    private final Class customMetadataClass;
+
+    private final ObjectMapper mapper;
+
+    public ItemDeserializer(JsonDeserializer<?> defaultDeserializer,
+                            Class<T> clazz,
+                            Class customMetadataClass) {
+        super(clazz);
+        this.defaultDeserializer = (JsonDeserializer<T>) defaultDeserializer;
+        this.customMetadataClass = customMetadataClass;
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+        this.mapper = mapper;
+    }
+
+    @Override
+    public T deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JsonProcessingException {
+        T item = (T) defaultDeserializer.deserialize(p, ctxt);
+        Object customMetadata = mapper.readValue(p, customMetadataClass);
+        String customAttributes = mapper.writeValueAsString(customMetadata);
+        item.setCustomAttributes(customAttributes);
+        return item;
+    }
+
+    @Override
+    public T deserialize(JsonParser p, DeserializationContext ctxt, T intoValue) throws IOException, JsonProcessingException {
+        if (log.isDebugEnabled()) {
+            //log.debug("deserializing into:");
+            //log.debug(mapper.writeValueAsString(intoValue));
+            log.debug("json:");
+            log.debug(mapper.writeValueAsString(p.readValueAsTree()));
+        }
+
+        T item = defaultDeserializer.deserialize(p, ctxt, intoValue);
+
+        if (log.isDebugEnabled()) {
+            log.debug("default deserialization:");
+            log.debug(mapper.writeValueAsString(item));
+        }
+
+        Object customMetadata = mapper.readValue(p, customMetadataClass);
+        String customAttributes = mapper.writeValueAsString(customMetadata);
+
+        if (log.isDebugEnabled()) {
+            log.debug("custom metadata:");
+            log.debug(mapper.writeValueAsString(customAttributes));
+        }
+
+        item.setCustomAttributes(customAttributes);
+
+        return item;
+    }
+
+    @Override
+    public void resolve(DeserializationContext ctxt) throws JsonMappingException {
+        ((ResolvableDeserializer) defaultDeserializer).resolve(ctxt);
+    }
+}

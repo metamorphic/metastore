@@ -1,0 +1,21 @@
+{
+  "schema": {
+    "id": "$baseurl/form-schemas/event-wizard-filter",
+    "$schema": "http://json-schema.org/schema#",
+    "name": "Feature Type",
+    "description": "Schema for the Event Wizard Filter Expression",
+    "type": "object",
+    "properties": {
+      "filterExpression": {
+        "title": "Filter Expression",
+        "description": "Condition on which row should be included using Spring Expression Language. If null, then include.",
+        "type": "string"
+      }
+    }
+  },
+  "form": {
+    "filterExpression": {
+      "type": "textarea"
+    }
+  }
+}

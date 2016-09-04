@@ -1,0 +1,66 @@
+{
+  "schema": {
+    "id": "$baseurl/form-schemas/feature-test",
+    "$schema": "http://json-schema.org/schema#",
+    "name": "Feature Family",
+    "description": "Schema for a Feature Test",
+    "type": "object",
+    "properties": {
+      "featureType": {
+        "title": "Feature Type",
+        "description": "Feature Type",
+        "type": "array",
+        "items": {
+          "$ref": "feature-type.json"
+        }
+      },
+      "description": {
+        "title": "Description",
+        "description": "Description of feature test case",
+        "type": "string"
+      },
+      "status": {
+        "title": "Status",
+        "description": "Test case status",
+        "enum": ["DEV", "LAB", "FACTORY"]
+      },
+      "dbname": {
+        "title": "Database/Schema",
+        "description": "Database or Schema name",
+        "type": "string"
+      },
+      "evalExpression": {
+        "title": "Eval expression",
+        "description": "Code / expression to test an assertion",
+        "type": "string"
+      },
+      "whereExpression": {
+        "title": "WHERE clause",
+        "description": "Code / expression to specify the constraints of the assertion.",
+        "type": "string"
+      },
+      "authorName": {
+        "title": "Author name",
+        "description": "Name of author",
+        "type": "string"
+      },
+      "authorEmail": {
+        "title": "Author email",
+        "description": "Author's email",
+        "type": "string"
+      }
+    }
+  },
+  "form": {
+    "featureType": {
+      "label": "name",
+      "source": "$ds1url/feature-types"
+    },
+    "evalExpression": {
+      "type": "textarea"
+    },
+    "whereExpression": {
+      "type": "textarea"
+    }
+  }
+}

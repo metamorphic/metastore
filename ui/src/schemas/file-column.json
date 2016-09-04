@@ -1,0 +1,142 @@
+{
+  "schema": {
+    "id": "$baseurl/form-schemas/file-column",
+    "$schema": "http://json-schema.org/schema#",
+    "name": "File Column",
+    "description": "Schema for File Column",
+    "type": "object",
+    "properties": {
+      "name": {
+        "title": "Name",
+        "description": "Name",
+        "type": "string"
+      },
+      "eventPropertyTypes": {
+        "title": "Property Types",
+        "description": "Property Types generated from this column.",
+        "type": "array",
+        "items": {
+          "$ref": "event-property-type.json"
+        }
+      },
+      "dataset": {
+        "title": "Dataset",
+        "description": "The dataset which the column belongs to.",
+        "type": "array",
+        "items": {
+          "$ref": "file-dataset.json"
+        }
+      },
+      "dataType": {
+        "title": "Data Type",
+        "description": "The data type of the column.",
+        "type": "array",
+        "items": {
+          "$ref": "data-type.json"
+        }
+      },
+      "valueType": {
+        "title": "Value Type",
+        "description": "The value type of the column.",
+        "type": "array",
+        "items": {
+          "$ref": "value-type.json"
+        }
+      },
+      "columnIndex": {
+        "title": "Column Index",
+        "description": "Index (from 1) of the column in the dataset.",
+        "type": "integer"
+      },
+      "description": {
+        "title": "Description",
+        "description": "Column description",
+        "type": "string"
+      },
+      "characterSet": {
+        "title": "Character Set",
+        "description": "The character set.",
+        "type": "string"
+      },
+      "collation": {
+        "title": "Collation",
+        "description": "The colation type.",
+        "type": "string"
+      },
+      "unique": {
+        "title": "Unique?",
+        "description": "Are column values unique?",
+        "type": "boolean"
+      },
+      "nullableType": {
+        "title": "Nullable Type",
+        "description": "The nullable type of the column.",
+        "enum": ["COLUMN_NO_NULLS", "COLUMN_NULLABLE", "COLUMN_NULLABLE_UNKNOWN"]
+      },
+      "length": {
+        "title": "Length",
+        "description": "Column length",
+        "type": "integer"
+      },
+      "defaultValue": {
+        "title": "Default Value",
+        "description": "The default value.",
+        "type": "string"
+      },
+      "autoinc": {
+        "title": "Auto-increment?",
+        "description": "Does the column have an auto-incrementing value?",
+        "type": "boolean"
+      },
+      "dimension": {
+        "title": "Dimension?",
+        "description": "Is the column a dimension?",
+        "type": "boolean"
+      },
+      "precision": {
+        "title": "Precision",
+        "description": "Number of significant digits of the numeric value.",
+        "type": "integer"
+      },
+      "scale": {
+        "title": "Scale",
+        "description": "Number of decimal places of the numeric value.",
+        "type": "integer"
+      },
+      "featureParamCandidate": {
+        "title": "Feature Parameter?",
+        "description": "Is the column a potential feature parameter?",
+        "type": "boolean"
+      },
+      "ignore": {
+        "title": "Ignore?",
+        "description": "Do not ingest this column?",
+        "type": "boolean"
+      }
+    },
+    "required": ["name"]
+  },
+  "form": {
+    "eventPropertyTypes": {
+      "label": "name",
+      "source": "$ds1url/event-property-types",
+      "type": "multiselect",
+      "async": "/search/filter?q="
+    },
+    "dataset": {
+      "label": "name",
+      "source": "$ds1url/file-datasets"
+    },
+    "dataType": {
+      "label": "name",
+      "source": "$ds1url/data-types"
+    },
+    "valueType": {
+      "label": "name",
+      "source": "$ds1url/value-types"
+    },
+    "description": {
+      "type": "textarea"
+    }
+  }
+}

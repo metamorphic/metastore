@@ -1,0 +1,258 @@
+{
+  "schema": {
+    "id": "$baseurl/form-schemas/file-dataset",
+    "$schema": "http://json-schema.org/schema#",
+    "name": "File Dataset",
+    "description": "Schema for File Dataset",
+    "type": "object",
+    "properties": {
+      "name": {
+        "title": "Name",
+        "description": "Dataset Name",
+        "type": "string"
+      },
+      "fileType": {
+        "title": "Type of file",
+        "description": "Type of file",
+        "enum": ["DELIMITED", "JSON", "FIXED", "MULTIRECORD"]
+      },
+      "eventTypes": {
+        "title": "Event Types",
+        "description": "Event Types generated from this dataset.",
+        "type": "array",
+        "items": {
+          "$ref": "event-type.json"
+        }
+      },
+      "customerIdMappingRules": {
+        "title": "Customer ID Mapping Rules",
+        "description": "Customer ID mappings generated from this dataset.",
+        "type": "array",
+        "items": {
+          "$ref": "customer-id-mapping-rule.json"
+        }
+      },
+      "dataSource": {
+        "title": "Data Source",
+        "description": "Source of the dataset",
+        "type": "array",
+        "items": {
+          "$ref": "file-data-source.json"
+        }
+      },
+      "naturalKeyColumns": {
+        "title": "Natural Key",
+        "description": "The columns that make up the natural key",
+        "type": "array",
+        "items": {
+          "$ref": "file-column.json"
+        }
+      },
+      "securityClassification": {
+        "title": "Security Classification",
+        "description": "Security classification of the dataset",
+        "type": "array",
+        "items": {
+          "$ref": "security-classification.json"
+        }
+      },
+      "namespace": {
+        "title": "Namespace",
+        "description": "Dataset namespace",
+        "type": "string"
+      },
+      "description": {
+        "title": "Description",
+        "description": "Dataset description",
+        "type": "string"
+      },
+      "comments": {
+        "title": "Comments",
+        "description": "Comments",
+        "type": "string"
+      },
+      "architectureDomain": {
+        "title": "Architecture Domain",
+        "description": "Architecture domain of dataset",
+        "type": "string"
+      },
+      "contactPerson": {
+        "title": "Contact Person",
+        "description": "Contact person",
+        "type": "string"
+      },
+      "customerData": {
+        "title": "Customer Data?",
+        "description": "Does the dataset contain customer data?",
+        "type": "boolean"
+      },
+      "financialBankingData": {
+        "title": "Financial and Banking Data?",
+        "description": "Does the dataset contain financial or banking data?",
+        "type": "boolean"
+      },
+      "idAndServiceHistory": {
+        "title": "ID and Service History?",
+        "description": "Does the dataset contain personal identifers or service history?",
+        "type": "boolean"
+      },
+      "creditCardData": {
+        "title": "Credit Card Data?",
+        "description": "Does the dataset contain credit card data?",
+        "type": "boolean"
+      },
+      "financialReportingData": {
+        "title": "Financial Reporting Data?",
+        "description": "Does the dataset contain financial reporting data?",
+        "type": "boolean"
+      },
+      "privacyData": {
+        "title": "Privacy Data?",
+        "description": "Does the dataset contain any data with privacy restrictions?",
+        "type": "boolean"
+      },
+      "regulatoryData": {
+        "title": "Regulatory Data?",
+        "description": "Does the dataset contain any regulatory data?",
+        "type": "boolean"
+      },
+      "nbnConfidentialData": {
+        "title": "NBN Confidential Data?",
+        "description": "Does the dataset contain any data with NBN confidentiality restrictions?",
+        "type": "boolean"
+      },
+      "nbnCompliant": {
+        "title": "NBN Compliant?",
+        "description": "Does the dataset contain any data that has NBN compliance requirements?",
+        "type": "boolean"
+      },
+      "ssuReady": {
+        "title": "SSU Ready",
+        "description": "SSU Ready",
+        "enum": ["RETAIL", "WHOLESALE", "CORP", "TRANS"]
+      },
+      "ssuRemediationMethod": {
+        "title": "SSU Remediation Method",
+        "description": "SSU remediation method",
+        "type": "string"
+      },
+      "availableHistoryUnitOfTime": {
+        "title": "Historical data available (Unit of time)",
+        "description": "Unit of time for historical data if available.",
+        "enum": ["HOUR", "DAY", "WEEK", "MONTH", "YEAR"]
+      },
+      "availableHistoryUnits": {
+        "title": "Historical data available (number of units)",
+        "description": "Number of units of time of historical data if available.",
+        "type": "integer"
+      },
+      "historyDataSizeGb": {
+        "title": "Historical data size (Gb)",
+        "description": "Size of historical data in Gb.",
+        "type": "integer"
+      },
+      "refreshDataSizeGb": {
+        "title": "Data refresh size (Gb)",
+        "description": "Data refresh size in Gb.",
+        "type": "integer"
+      },
+      "batch": {
+        "title": "Batch?",
+        "description": "Is data received in batch?",
+        "type": "boolean"
+      },
+      "refreshFrequencyUnitOfTime": {
+        "title": "Data refresh frequency (Unit of time)",
+        "description": "Unit of time for data refresh cycles.",
+        "enum": ["HOUR", "DAY", "WEEK", "MONTH", "YEAR"]
+      },
+      "refreshFrequencyUnits": {
+        "title": "Data refresh frequency (number of units)",
+        "description": "Number of units of time between data refresh cycles.",
+        "type": "integer"
+      },
+      "timeOfDayDataAvailable": {
+        "title": "New data available (Time of day)",
+        "description": "Time of day when new data will be available.",
+        "type": "time"
+      },
+      "dataAvailableDaysOfWeek": {
+        "title": "New data available (Days of week - comma separated, Sun = 0)",
+        "description": "Days of week when new data will be available.",
+        "type": "time"
+      },
+      "dataLatencyUnitOfTime": {
+        "title": "Data latency (Unit of time)",
+        "description": "Unit of time for data latency.",
+        "enum": ["HOUR", "DAY", "WEEK", "MONTH", "YEAR"]
+      },
+      "dataLatencyUnits": {
+        "title": "Data latency (number of units)",
+        "description": "Number of units of time for data latency.",
+        "type": "integer"
+      },
+      "columnDelimiter": {
+        "title": "Column Delimiter (default is ',')",
+        "description": "Column delimiter",
+        "type": "string"
+      },
+      "headerRow": {
+        "title": "Header Row?",
+        "description": "Does the dataset have a header row?",
+        "type": "boolean"
+      },
+      "footerRow": {
+        "title": "Footer Row?",
+        "description": "Does the dataset have a footer row?",
+        "type": "boolean"
+      },
+      "rowDelimiter": {
+        "title": "Row Delimiter (default is newline character)",
+        "description": "Row delimiter",
+        "type": "string"
+      },
+      "textQualifier": {
+        "title": "Text Qualifier (default is double quotes)",
+        "description": "Text qualifier",
+        "type": "string"
+      },
+      "compressionType": {
+        "title": "Compression Type",
+        "description": "Type of file compression used.",
+        "enum": ["NONE", "ZIP", "GZ", "TAR", "TAR_GZ", "SEVEN_ZIP"]
+      }
+    },
+    "required": ["name"]
+  },
+  "form": {
+    "eventTypes": {
+      "label": "name",
+      "source": "$ds1url/event-types",
+      "type": "multiselect"
+    },
+    "naturalKeyColumns": {
+      "label": "name",
+      "source": "$ds1url/file-columns",
+      "type": "multiselect"
+    },
+    "customerIdMappingRules": {
+      "label": "name",
+      "source": "$ds1url/customer-id-mapping-rules",
+      "type": "multiselect"
+    },
+    "dataSource": {
+      "label": "name",
+      "source": "$ds1url/file-data-sources"
+    },
+    "securityClassification": {
+      "label": "name",
+      "source": "$ds1url/security-classifications"
+    },
+    "description": {
+      "type": "textarea"
+    },
+    "comments": {
+      "type": "textarea"
+    }
+  }
+}

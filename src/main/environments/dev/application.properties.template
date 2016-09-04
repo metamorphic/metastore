@@ -1,0 +1,51 @@
+# Metastore Repository
+# ====================
+spring.datasource.meta.driver-class-name=org.postgresql.Driver
+
+spring.datasource.meta.url=jdbc:postgresql://<host>:5432/cxpdev?autoReconnect=true
+spring.datasource.meta.username=
+spring.datasource.meta.password=
+
+
+# Event Log Repository
+# ====================
+spring.datasource.eventlog.driver-class-name=org.postgresql.Driver
+
+spring.datasource.eventlog.url=jdbc:postgresql://<host>:5432/cxpdev?autoReconnect=true
+spring.datasource.eventlog.username=
+spring.datasource.eventlog.password=
+
+
+# Stats Repository
+# ================
+spring.datasource.stats.driver-class-name=org.postgresql.Driver
+
+spring.datasource.stats.url=jdbc:postgresql://<host>:5432/cxpdev?autoReconnect=true
+spring.datasource.stats.username=
+spring.datasource.stats.password=
+
+
+# JPA Properties
+# ==============
+spring.jpa.database-platform=org.hibernate.dialect.PostgreSQLDialect
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
+spring.jpa.show-sql=false
+#spring.jpa.hibernate.ddl-auto=validate
+spring.jpa.properties.hibernate.default_schema=meta
+
+
+# Spring Data REST Properties
+# ===========================
+spring.data.rest.baseUri=api
+spring.data.rest.maxPageSize=99999
+
+
+# Spring MVC Properties
+# =====================
+spring.application.index=index.html
+
+
+# Logging configuration
+# =====================
+logging.level.org.springframework=INFO
+logging.level.metastore=DEBUG

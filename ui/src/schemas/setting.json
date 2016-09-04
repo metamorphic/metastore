@@ -1,0 +1,27 @@
+{
+  "schema": {
+    "id": "$baseurl/form-schemas/setting",
+    "$schema": "http://json-schema.org/schema#",
+    "name": "Setting",
+    "description": "Schema for a Setting",
+    "type": "object",
+    "properties": {
+      "name": {
+        "title": "Name",
+        "description": "Setting name",
+        "type": "string"
+      },
+      "value": {
+        "title": "Value",
+        "description": "Setting value",
+        "type": "string"
+      }
+    }
+  },
+  "form": {
+    "value": {
+      "type": "textarea",
+      "rows": 12
+    }
+  }
+}

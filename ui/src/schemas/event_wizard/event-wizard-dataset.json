@@ -1,0 +1,48 @@
+{
+  "schema": {
+    "id": "$baseurl/form-schemas/event-wizard-dataset",
+    "$schema": "http://json-schema.org/schema#",
+    "name": "Feature Type",
+    "description": "Schema for the Event Wizard Dataset form",
+    "type": "object",
+    "properties": {
+      "deleteExistingEvents": {
+        "title": "Remove existing events?",
+        "description": "Remove existing events",
+        "type": "boolean"
+      },
+      "name": {
+        "title": "Name",
+        "description": "Name of the event",
+        "type": "string"
+      },
+      "dataset": {
+        "title": "Dataset",
+        "description": "The record dataset.",
+        "type": "array",
+        "items": {
+          "$ref": "file-dataset.json"
+        }
+      },
+      "namespace": {
+        "title": "Namespace",
+        "description": "Namespace",
+        "type": "string"
+      },
+      "description": {
+        "title": "Description",
+        "description": "Event Type description",
+        "type": "string"
+      }
+    }
+  },
+  "form": {
+    "dataset": {
+      "label": "name",
+      "source": "$ds1url/file-datasets"
+    },
+    "description": {
+      "type": "textarea"
+    }
+  }
+}

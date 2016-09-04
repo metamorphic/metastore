@@ -1,0 +1,82 @@
+{
+  "schema": {
+    "id": "$baseurl/form-schemas/table-data-source",
+    "$schema": "http://json-schema.org/schema#",
+    "name": "Table Data Source",
+    "description": "Schema for Table Data Source",
+    "type": "object",
+    "properties": {
+      "name": {
+        "title": "Name",
+        "description": "Data Source Name",
+        "type": "string"
+      },
+      "sourcingMethod": {
+        "title": "Sourcing Method",
+        "description": "Sourcing method",
+        "type": "string"
+      },
+      "hostname": {
+        "title": "Host Name",
+        "description": "Server hostname",
+        "type": "string"
+      },
+      "ipaddr": {
+        "title": "Host IP Address",
+        "description": "Server IP address",
+        "type": "string"
+      },
+      "port": {
+        "title": "Port",
+        "description": "Server port number",
+        "type": "string"
+      },
+      "firewallStatus": {
+        "title": "Firewall Status",
+        "description": "Firewall status",
+        "type": "string"
+      },
+      "description": {
+        "title": "Description",
+        "description": "Data source description",
+        "type": "string"
+      },
+      "serverType": {
+        "title": "Server Type",
+        "description": "Type of database server",
+        "enum": ["POSTGRESQL", "TERADATA", "ORACLE", "SQLSERVER", "MYSQL"]
+      },
+      "serverVersion": {
+        "title": "Server Version",
+        "description": "Database server version",
+        "type": "string"
+      },
+      "connectionUrl": {
+        "title": "Connection URL",
+        "description": "Connection URL",
+        "type": "string"
+      },
+      "catalogName": {
+        "title": "Catalog",
+        "description": "Catalog name",
+        "type": "string"
+      },
+      "schemaName": {
+        "title": "Schema",
+        "description": "Schema name",
+        "type": "string"
+      },
+      "tableName": {
+        "title": "Table",
+        "description": "Table name",
+        "type": "string"
+      }
+    },
+    "required": ["name"]
+  },
+  "form": {
+    "description": {
+      "type": "textarea"
+    }
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "schema": {
+    "id": "$baseurl/form-schemas/customer-id-type-mapping",
+    "$schema": "http://json-schema.org/schema#",
+    "name": "Customer ID Type",
+    "description": "Schema for a Customer ID Type Mapping",
+    "type": "object",
+    "properties": {
+      "customerIdType": {
+        "title": "Customer ID Type",
+        "description": "The type of Customer ID.",
+        "type": "array",
+        "items": {
+          "$ref": "customer-id-type.json"
+        }
+      },
+      "customerIdExpression": {
+        "title": "Customer ID Expression",
+        "description": "Maps one or more source columns to the customer ID using Spring Expression Language.",
+        "type": "string"
+      }
+    }
+  },
+  "form": {
+    "customerIdType": {
+      "label": "name",
+      "source": "$ds1url/customer-id-types"
+    },
+    "customerIdExpression": {
+      "type": "textarea"
+    }
+  }
+}

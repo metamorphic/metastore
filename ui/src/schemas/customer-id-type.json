@@ -1,0 +1,76 @@
+{
+  "schema": {
+    "id": "$baseurl/form-schemas/customer-id-type",
+    "$schema": "http://json-schema.org/schema#",
+    "name": "Customer ID Type",
+    "description": "Schema for a Customer ID Type",
+    "type": "object",
+    "properties": {
+      "name": {
+        "title": "Customer ID Type",
+        "description": "Customer ID Type",
+        "type": "string"
+      },
+      "description": {
+        "title": "Description",
+        "description": "Customer ID Type description",
+        "type": "string"
+      },
+      "composite": {
+        "title": "Composite Identifier?",
+        "description": "Is the ID composed of many customer attributes?",
+        "type": "boolean"
+      },
+      "children": {
+        "title": "Child Customer ID Types",
+        "description": "Child customer ID types.",
+        "type": "array",
+        "items": {
+          "$ref": "customer-id-type.json"
+        }
+      },
+      "compositionRule": {
+        "title": "Composition Rule",
+        "description": "If this is a composite identifier, then this describes how the customer attributes are used to derive a unique key.",
+        "type": "string"
+      },
+      "valueType": {
+        "title": "Value Type",
+        "description": "The value type of the column.",
+        "type": "array",
+        "items": {
+          "$ref": "value-type.json"
+        }
+      },
+      "dataType": {
+        "title": "Data Type",
+        "description": "The data type of the column.",
+        "type": "array",
+        "items": {
+          "$ref": "data-type.json"
+        }
+      }
+    }
+  },
+  "form": {
+    "description": {
+      "type": "textarea"
+    },
+    "compositionRule": {
+      "type": "textarea"
+    },
+    "children": {
+      "label": "name",
+      "source": "$ds1url/customer-id-types",
+      "type": "multiselect"
+    },
+    "valueType": {
+      "label": "name",
+      "source": "$ds1url/value-types"
+    },
+    "dataType": {
+      "label": "name",
+      "source": "$ds1url/data-types"
+    }
+  }
+}

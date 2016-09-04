@@ -1,0 +1,67 @@
+{
+  "schema": {
+    "id": "$baseurl/form-schemas/file-data-source",
+    "$schema": "http://json-schema.org/schema#",
+    "name": "File Data Source",
+    "description": "Schema for File Data Source",
+    "type": "object",
+    "properties": {
+      "name": {
+        "title": "Name",
+        "description": "Data Source Name",
+        "type": "string"
+      },
+      "sourcingMethod": {
+        "title": "Sourcing Method",
+        "description": "Sourcing method",
+        "type": "string"
+      },
+      "hostname": {
+        "title": "Host Name",
+        "description": "Server hostname",
+        "type": "string"
+      },
+      "ipaddr": {
+        "title": "Host IP Address",
+        "description": "Server IP address",
+        "type": "string"
+      },
+      "port": {
+        "title": "Port",
+        "description": "Server port number",
+        "type": "string"
+      },
+      "firewallStatus": {
+        "title": "Firewall Status",
+        "description": "Firewall status",
+        "type": "string"
+      },
+      "description": {
+        "title": "Description",
+        "description": "Data source description",
+        "type": "string"
+      },
+      "network": {
+        "title": "Network",
+        "description": "Network",
+        "type": "string"
+      },
+      "filepath": {
+        "title": "File Path",
+        "description": "Path of file to ingest",
+        "type": "string"
+      },
+      "filenamePattern": {
+        "title": "Filename Pattern",
+        "description": "Filename pattern of file to ingest",
+        "type": "string"
+      }
+    },
+    "required": ["name"]
+  },
+  "form": {
+    "description": {
+      "type": "textarea"
+    }
+  }
+}

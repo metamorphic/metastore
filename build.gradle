@@ -1,0 +1,121 @@
+// Build for a particular environment using `gradle -Penv=local build`
+
+buildscript {
+    ext {
+        springBootVersion = '1.2.5.RELEASE'
+    }
+    repositories {
+        maven {
+                url "${artifactory_pluginsUrl}"
+            credentials {
+                username = "${artifactory_user}"
+                password = "${artifactory_password}"
+            }
+        }
+    }
+    dependencies {
+        //Check for the latest version here: http://plugins.gradle.org/plugin/com.jfrog.artifactory
+        classpath 'org.jfrog.buildinfo:build-info-extractor-gradle:3.1.1'
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
+    }
+}
+
+ext {
+    environment = 'dev'
+}
+
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'spring-boot'
+apply plugin: 'maven-publish'
+apply plugin: 'com.jfrog.artifactory'
+apply plugin: 'project-report'
+
+group = 'io.metamorphic'
+version = '1.0'
+
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
+
+loadConfiguration()
+
+def loadConfiguration() {
+    def environment = hasProperty('env') ? env : 'dev'
+    setProperty 'environment', environment
+}
+
+apply from: 'tasks.gradle'
+
+processResources.dependsOn copyConfiguration
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+        }
+    }
+}
+
+configurations {
+    provided
+    compile.extendsFrom provided
+}
+
+jar {
+    baseName = 'metastore'
+    version = '1.0'
+}
+
+artifactory {
+    contextUrl = "${artifactory_contextUrl}"   //The base Artifactory URL if not overridden by the publisher/resolver
+    publish {
+        repository {
+            repoKey = 'libs-release-local'
+            username = "${artifactory_user}"
+            password = "${artifactory_password}"
+            maven = true
+        }
+        defaults {
+            publications ('mavenJava')
+        }
+    }
+    resolve {
+        repository {
+            repoKey = 'libs-release'
+            username = "${artifactory_user}"
+            password = "${artifactory_password}"
+            maven = true
+        }
+    }
+}
+
+dependencies {
+    compile 'org.springframework.boot:spring-boot-starter-data-rest'
+    compile 'org.springframework.boot:spring-boot-starter-data-jpa'
+    compile 'org.springframework.boot:spring-boot-starter-data-elasticsearch'
+    compile 'org.springframework.boot:spring-boot-starter-web'
+    //compile 'com.h2database:h2'
+    compile 'org.postgresql:postgresql:9.4-1201-jdbc4'
+    //compile 'net.sf.opencsv:opencsv:2.4-SNAPSHOT' // use modified in libs
+    compile 'org.apache.commons:commons-lang3:3.4'
+    //runtime fileTree(dir: 'libs', include: '*.jar')
+    compile files('libs/opencsv-2.4-SNAPSHOT.jar')
+    //compile files('libs/fileservices-1.0.jar')
+    //compile files('libs/metamodel-1.0.jar')
+    //compile files('libs/metamorphic-commons-1.0.jar')
+    compile 'io.metamorphic:metamodel:1.0'
+    compile 'io.metamorphic:fileservices:1.0'
+    compile 'joda-time:joda-time:2.7'
+    compile 'commons-io:commons-io:2.4'
+    compile 'com.zaxxer:HikariCP-java6:2.3.8'
+    compile 'com.foundationdb:fdb-sql-parser:1.6.1'
+    compile 'com.fasterxml.jackson.datatype:jackson-datatype-hibernate4:2.4.6'
+    compile 'org.eclipse.mylyn.github:org.eclipse.egit.github.core:2.1.5'
+    //compile 'org.springframework.xd:spring-xd-rest-client:1.0.4.RELEASE' // causing a conflict with elasticsearchClient
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.5'
+    distributionUrl = "https://services.gradle.org/distributions/gradle-$gradleVersion-all.zip"
+}

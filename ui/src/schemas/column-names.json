@@ -1,0 +1,38 @@
+{
+  "schema": {
+    "id": "$baseurl/form-schemas/column-names",
+    "$schema": "http://json-schema.org/schema#",
+    "name": "Column Names",
+    "description": "Schema for updating column names",
+    "type": "object",
+    "properties": {
+      "dataset": {
+        "title": "Dataset",
+        "description": "The dataset to update with new column names.",
+        "type": "array",
+        "items": {
+          "$ref": "file-dataset.json"
+        }
+      },
+      "delimiter": {
+        "title": "Delimiter",
+        "description": "Column delimiter",
+        "type": "string"
+      },
+      "names": {
+        "title": "Column names",
+        "description": "New column names",
+        "type": "string"
+      }
+    }
+  },
+  "form": {
+    "dataset": {
+      "label": "name",
+      "source": "$ds1url/file-datasets"
+    },
+    "names": {
+      "type": "textarea"
+    }
+  }
+}

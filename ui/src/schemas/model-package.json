@@ -1,0 +1,31 @@
+{
+  "schema": {
+    "id": "$baseurl/form-schemas/model-package",
+    "$schema": "http://json-schema.org/schema#",
+    "name": "Feature Family",
+    "description": "Schema for a Model Package",
+    "type": "object",
+    "properties": {
+      "name": {
+        "title": "Name",
+        "description": "Package name",
+        "type": "string"
+      },
+      "version": {
+        "title": "Version",
+        "description": "Package version",
+        "type": "string"
+      },
+      "description": {
+        "title": "Description",
+        "description": "Package description",
+        "type": "string"
+      }
+    }
+  },
+  "form": {
+    "description": {
+      "type": "textarea"
+    }
+  }
+}

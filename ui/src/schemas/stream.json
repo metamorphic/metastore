@@ -1,0 +1,51 @@
+{
+  "schema": {
+    "id": "$baseurl/form-schemas/stream",
+    "$schema": "http://json-schema.org/schema#",
+    "name": "Security Classification",
+    "description": "Schema for a Spring XD Stream Definition",
+    "type": "object",
+    "properties": {
+      "name": {
+        "title": "Name",
+        "description": "Stream name",
+        "type": "string"
+      },
+      "namespace": {
+        "title": "Namespace",
+        "description": "Namespace",
+        "type": "string"
+      },
+      "pollingDirectory": {
+        "title": "Polling Directory",
+        "description": "Directory to poll. Use Unix-style slashes '/'.",
+        "type": "string"
+      },
+      "filenamePattern": {
+        "title": "Filename pattern",
+        "description": "Filename pattern",
+        "type": "string"
+      },
+      "preventDuplicates": {
+        "title": "Prevent Duplicates?",
+        "description": "Do not ingest the same file",
+        "type": "boolean"
+      },
+      "job": {
+        "title": "Job",
+        "description": "Spring Batch Job to run",
+        "type": "string"
+      },
+      "definition": {
+        "title": "Or provide a definition",
+        "description": "Stream definition",
+        "type": "string"
+      }
+    }
+  },
+  "form": {
+    "definition": {
+      "type": "textarea"
+    }
+  }
+}

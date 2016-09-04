@@ -1,0 +1,16 @@
+{
+  "schema": {
+    "id": "$baseurl/form-schemas/security-classification",
+    "$schema": "http://json-schema.org/schema#",
+    "name": "Security Classification",
+    "description": "Schema for a Security Classification",
+    "type": "object",
+    "properties": {
+      "name": {
+        "title": "Name",
+        "description": "Security classification name",
+        "type": "string"
+      }
+    }
+  }
+}

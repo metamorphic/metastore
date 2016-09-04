@@ -1,0 +1,72 @@
+{
+  "schema": {
+    "id": "$baseurl/form-schemas/model",
+    "$schema": "http://json-schema.org/schema#",
+    "name": "Feature Family",
+    "description": "Schema for an Analytical Model",
+    "type": "object",
+    "properties": {
+      "name": {
+        "title": "Name",
+        "description": "Model name",
+        "type": "string"
+      },
+      "version": {
+        "title": "Version",
+        "description": "Model version",
+        "type": "string"
+      },
+      "ensemble": {
+        "title": "Ensemble?",
+        "description": "Is the model an ensemble model?",
+        "type": "boolean"
+      },
+      "committer": {
+        "title": "Committer",
+        "description": "Model committer",
+        "type": "string"
+      },
+      "contactPerson": {
+        "title": "Contact",
+        "description": "Contact person name",
+        "type": "string"
+      },
+      "description": {
+        "title": "Description",
+        "description": "Model description",
+        "type": "string"
+      },
+      "packages": {
+        "title": "Packages",
+        "description": "Dependent packages",
+        "type": "array",
+        "items": {
+          "$ref": "model-package.json"
+        }
+      },
+      "relatedModels": {
+        "title": "Related Models",
+        "description": "Related models",
+        "type": "array",
+        "items": {
+          "$ref": "model.json"
+        }
+      }
+    }
+  },
+  "form": {
+    "description": {
+      "type": "textarea"
+    },
+    "packages": {
+      "label": "name",
+      "source": "$ds1url/model-packages",
+      "type": "multiselect"
+    },
+    "relatedModels": {
+      "label": "name",
+      "source": "$ds1url/models",
+      "type": "multiselect"
+    }
+  }
+}

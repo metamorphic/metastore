@@ -1,0 +1,129 @@
+{
+  "schema": {
+    "id": "$baseurl/form-schemas/table-dataset",
+    "$schema": "http://json-schema.org/schema#",
+    "name": "Table Dataset",
+    "description": "Schema for Table Dataset",
+    "type": "object",
+    "properties": {
+      "name": {
+        "title": "Name",
+        "description": "Dataset Name",
+        "type": "string"
+      },
+      "dataSource": {
+        "title": "Data Source",
+        "description": "Source of the dataset",
+        "type": "array",
+        "items": {
+          "$ref": "table-data-source.json"
+        }
+      },
+      "securityClassification": {
+        "title": "Security Classification",
+        "description": "Security classification of the dataset",
+        "type": "array",
+        "items": {
+          "$ref": "security-classification.json"
+        }
+      },
+      "namespace": {
+        "title": "Namespace",
+        "description": "Dataset namespace",
+        "type": "string"
+      },
+      "description": {
+        "title": "Description",
+        "description": "Dataset description",
+        "type": "string"
+      },
+      "comments": {
+        "title": "Comments",
+        "description": "Comments",
+        "type": "string"
+      },
+      "architectureDomain": {
+        "title": "Architecture Domain",
+        "description": "Architecture domain of dataset",
+        "type": "string"
+      },
+      "contactPerson": {
+        "title": "Contact Person",
+        "description": "Contact person",
+        "type": "string"
+      },
+      "customerData": {
+        "title": "Customer Data?",
+        "description": "Does the dataset contain customer data?",
+        "type": "boolean"
+      },
+      "financialBankingData": {
+        "title": "Financial and Banking Data?",
+        "description": "Does the dataset contain financial or banking data?",
+        "type": "boolean"
+      },
+      "idAndServiceHistory": {
+        "title": "ID and Service History?",
+        "description": "Does the dataset contain personal identifers or service history?",
+        "type": "boolean"
+      },
+      "creditCardData": {
+        "title": "Credit Card Data?",
+        "description": "Does the dataset contain credit card data?",
+        "type": "boolean"
+      },
+      "financialReportingData": {
+        "title": "Financial Reporting Data?",
+        "description": "Does the dataset contain financial reporting data?",
+        "type": "boolean"
+      },
+      "privacyData": {
+        "title": "Privacy Data?",
+        "description": "Does the dataset contain any data with privacy restrictions?",
+        "type": "boolean"
+      },
+      "regulatoryData": {
+        "title": "Regulatory Data?",
+        "description": "Does the dataset contain any regulatory data?",
+        "type": "boolean"
+      },
+      "nbnConfidentialData": {
+        "title": "NBN Confidential Data?",
+        "description": "Does the dataset contain any data with NBN confidentiality restrictions?",
+        "type": "boolean"
+      },
+      "nbnCompliant": {
+        "title": "NBN Compliant?",
+        "description": "Does the dataset contain any data that has NBN compliance requirements?",
+        "type": "boolean"
+      },
+      "ssuReady": {
+        "title": "SSU Ready",
+        "description": "SSU Ready",
+        "enum": ["RETAIL", "WHOLESALE", "CORP", "TRANS"]
+      },
+      "ssuRemediationMethod": {
+        "title": "SSU Remediation Method",
+        "description": "SSU remediation method",
+        "type": "string"
+      }
+    },
+    "required": ["name"]
+  },
+  "form": {
+    "dataSource": {
+      "label": "name",
+      "source": "$ds1url/table-data-sources"
+    },
+    "securityClassification": {
+      "label": "name",
+      "source": "$ds1url/security-classifications"
+    },
+    "description": {
+      "type": "textarea"
+    },
+    "comments": {
+      "type": "textarea"
+    }
+  }
+}

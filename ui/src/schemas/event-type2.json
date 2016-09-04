@@ -1,0 +1,90 @@
+{
+  "schema": {
+    "id": "$baseurl/form-schemas/event-type",
+    "$schema": "http://json-schema.org/schema#",
+    "name": "Event Type",
+    "description": "Schema for an Event Type",
+    "type": "object",
+    "properties": {
+      "name": {
+        "title": "Name",
+        "description": "Event Type name",
+        "type": "string"
+      },
+      "namespace": {
+        "title": "Namespace",
+        "description": "Namespace",
+        "type": "string"
+      },
+      "description": {
+        "title": "Description",
+        "description": "Event Type description",
+        "type": "string"
+      },
+      "valueType": {
+        "title": "Value Type",
+        "description": "The value type of the column.",
+        "type": "array",
+        "items": {
+          "$ref": "value-type.json"
+        }
+      },
+      "customerIdTypeMappings": {
+        "title": "Customer ID Types",
+        "description": "Types of customer ID.",
+        "type": "array",
+        "items": {
+          "$ref": "customer-id-type-mapping.json"
+        }
+      },
+      "nestedDocumentExpression": {
+        "title": "Nested Document Expression",
+        "description": "The JSON path to the nested document to use as a record. Applicable to JSON only.",
+        "type": "string"
+      },
+      "filterExpression": {
+        "title": "Filter Expression",
+        "description": "Condition on which row should be included using Spring Expression Language. If null, then include.",
+        "type": "string"
+      },
+      "valueExpression": {
+        "title": "Value Expression",
+        "description": "Maps one or more source columns to the event value using Spring Expression Language.",
+        "type": "string"
+      },
+      "tsExpression": {
+        "title": "Timestamp Expression",
+        "description": "Maps one or more source columns to the event timestamp using Spring Expression Language.",
+        "type": "string"
+      }
+    }
+  },
+  "form": {
+    "description": {
+      "type": "textarea"
+    },
+    "valueType": {
+      "label": "name",
+      "source": "$ds1url/value-types"
+    },
+    "customerIdTypeMappings": {
+      "schema": "customer-id-type-mapping",
+      "type": "repeater"
+    },
+    "nestedDocumentExpression": {
+      "type": "textarea"
+    },
+    "filterExpression": {
+      "type": "textarea"
+    },
+    "customerIdExpression": {
+      "type": "textarea"
+    },
+    "valueExpression": {
+      "type": "textarea"
+    },
+    "tsExpression": {
+      "type": "textarea"
+    }
+  }
+}

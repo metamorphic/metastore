@@ -1,0 +1,16 @@
+{
+  "schema": {
+    "id": "$baseurl/form-schemas/data-type",
+    "$schema": "http://json-schema.org/schema#",
+    "name": "Data Type",
+    "description": "Schema for a Data Type",
+    "type": "object",
+    "properties": {
+      "name": {
+        "title": "Name",
+        "description": "Data Type name",
+        "type": "string"
+      }
+    }
+  }
+}

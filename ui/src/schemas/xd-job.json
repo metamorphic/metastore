@@ -1,0 +1,28 @@
+{
+  "schema": {
+    "id": "$baseurl/form-schemas/xd-job",
+    "$schema": "http://json-schema.org/schema#",
+    "name": "Security Classification",
+    "description": "Schema for a Spring XD Job",
+    "type": "object",
+    "properties": {
+      "name": {
+        "title": "Name",
+        "description": "Job name",
+        "type": "string"
+      },
+      "jarLocation": {
+        "title": "JAR Location",
+        "description": "JAR location of custom module. Must be accessible from the Spring XD service.",
+        "type": "string"
+      },
+      "makeUnique": {
+        "title": "Make Unique?",
+        "description": "Must be set to false in production",
+        "type": "boolean"
+      }
+    }
+  },
+  "form": {
+  }
+}

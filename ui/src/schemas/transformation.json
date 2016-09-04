@@ -1,0 +1,111 @@
+{
+  "schema": {
+    "id": "$baseurl/form-schemas/transformation",
+    "$schema": "http://json-schema.org/schema#",
+    "name": "Transformation",
+    "description": "Schema for Transformation",
+    "type": "object",
+    "properties": {
+      "name": {
+        "title": "Name",
+        "description": "Transformation Name",
+        "type": "string"
+      },
+      "description": {
+        "title": "Description",
+        "description": "Transformation description",
+        "type": "string"
+      },
+      "inputDatasets": {
+        "title": "Input Datasets",
+        "description": "Datasets to be transformed.",
+        "type": "array",
+        "items": {
+          "$ref": "dataset.json"
+        }
+      },
+      "outputDataset": {
+        "title": "Output",
+        "description": "Dataset produced from the transformation",
+        "type": "array",
+        "items": {
+          "$ref": "dataset.json"
+        }
+      },
+      "create": {
+        "title": "or Create?",
+        "description": "Create output dataset",
+        "type": "boolean"
+      },
+      "newDatasetName": {
+        "title": "Dataset Name (if new)",
+        "description": "Name of new dataset",
+        "type": "string"
+      },
+      "createAs": {
+        "title": "As",
+        "description": "Output Type",
+        "enum": ["VIEW", "MATERIALIZE"]
+      },
+      "language": {
+        "title": "Language",
+        "description": "Script language",
+        "enum": ["SQL", "PL/SQL", "R", "SAS", "Java", "Pig", "Spark", "ETL"]
+      },
+      "routine": {
+        "title": "Script",
+        "description": "Transformation script",
+        "type": "string"
+      },
+      "reference": {
+        "title": "Reference",
+        "description": "Reference to transformation code",
+        "type": "string"
+      },
+      "leadCommitter": {
+        "title": "Lead Committer",
+        "description": "Name of lead developer/analyst",
+        "type": "string"
+      },
+      "contactEmail": {
+        "title": "Contact Email",
+        "description": "Contact email of lead developer/analyst",
+        "type": "string"
+      },
+      "repo": {
+        "title": "Code Repository",
+        "description": "e.g. Git repository name",
+        "type": "string"
+      },
+      "commitHash": {
+        "title": "Commit Hash",
+        "description": "Commit Hash of current code release",
+        "type": "string"
+      },
+      "version": {
+        "title": "Version",
+        "description": "Version number",
+        "type": "integer"
+      }
+    },
+    "required": ["name"]
+  },
+  "form": {
+    "description": {
+      "type": "textarea"
+    },
+    "inputDatasets": {
+      "label": "name",
+      "source": "$ds1url/datasets",
+      "type": "multiselect"
+    },
+    "outputDataset": {
+      "label": "name",
+      "source": "$ds1url/datasets"
+    },
+    "routine": {
+      "type": "textarea",
+      "rows": 12
+    }
+  }
+}
