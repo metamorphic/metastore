@@ -1,4 +1,4 @@
-# Big Data CXP Projects
+# Metastore and dependencies
 
 * metastore - metadata respository. one of its functions is to drive ingest into the event log.
 * cxp-ingest - Spring Batch module to ingest a delimited file into the event log using metadata from the metastore. custom column and row delimiters may be used. (depends on cxp-transform, cxp-batch-io)
@@ -25,31 +25,31 @@ The following repositories have been setup on Artifactory:
 
 #### Local Repositories
 
-ext-release-local - maven-2-default layout, 'Includes Pattern' = \*\*/\*, 'Handle Releases' checked, 'Maven Snapshot Version Behaviour' = Unique
-ext-snapshot-local - maven-2-default layout, 'Includes Pattern' = \*\*/\*, 'Handle Snapshots' checked, 'Maven Snapshot Version Behaviour' = Unique
-libs-release-local - maven-2-default layout, 'Includes Pattern' = \*\*/\*, 'Handle Releases' checked, 'Maven Snapshot Version Behaviour' = Unique
-libs-snapshot-local - maven-2-default layout, 'Includes Pattern' = \*\*/\*, 'Handle Snapshots' checked, 'Maven Snapshot Version Behaviour' = Unique
-plugins-release-local - maven-2-default layout, 'Includes Pattern' = \*\*/\*, 'Handle Releases' checked, 'Maven Snapshot Version Behaviour' = Unique
-plugins-snapshot-local - maven-2-default layout, 'Includes Pattern' = \*\*/\*, 'Handle Snapshots' checked, 'Maven Snapshot Version Behaviour' = Unique
+* ext-release-local - maven-2-default layout, 'Includes Pattern' = \*\*/\*, 'Handle Releases' checked, 'Maven Snapshot Version Behaviour' = Unique
+* ext-snapshot-local - maven-2-default layout, 'Includes Pattern' = \*\*/\*, 'Handle Snapshots' checked, 'Maven Snapshot Version Behaviour' = Unique
+* libs-release-local - maven-2-default layout, 'Includes Pattern' = \*\*/\*, 'Handle Releases' checked, 'Maven Snapshot Version Behaviour' = Unique
+* libs-snapshot-local - maven-2-default layout, 'Includes Pattern' = \*\*/\*, 'Handle Snapshots' checked, 'Maven Snapshot Version Behaviour' = Unique
+* plugins-release-local - maven-2-default layout, 'Includes Pattern' = \*\*/\*, 'Handle Releases' checked, 'Maven Snapshot Version Behaviour' = Unique
+* plugins-snapshot-local - maven-2-default layout, 'Includes Pattern' = \*\*/\*, 'Handle Snapshots' checked, 'Maven Snapshot Version Behaviour' = Unique
 
 #### Remote Repositories
 
-conjars.org - url = http://conjars.org/repo, 'Handle Releases' checked, 'Handle Snapshots' checked
-jcenter - Bintray Central Java repository, url = http://jcenter.bintray.com, 'Handle Releases' checked
-repository.jboss.org - url = http://repository.jboss.org/nexus/content/groups/public/, 'Handle Releases' checked, 'Handle Snapshots' checked
-spring-milestone - url = http://repo.spring.io/milestone, 'Handle Releases' checked, 'Handle Snapshots' checked
-spring-plugins-release - url = http://repo.spring.io/plugins-release, 'Handle Releases' checked
-spring-plugins-snapshot - url = http://repo.spring.io/plugins-snapshot, 'Handle Snapshots' checked
-spring-release - url = http://repo.spring.io/release, 'Handle Releases' checked
-spring-snapshot - url = http://repo.spring.io/snapshot, 'Handle Snapshots' checked
+* conjars.org - url = http://conjars.org/repo, 'Handle Releases' checked, 'Handle Snapshots' checked
+* jcenter - Bintray Central Java repository, url = http://jcenter.bintray.com, 'Handle Releases' checked
+* repository.jboss.org - url = http://repository.jboss.org/nexus/content/groups/public/, 'Handle Releases' checked, 'Handle Snapshots' checked
+* spring-milestone - url = http://repo.spring.io/milestone, 'Handle Releases' checked, 'Handle Snapshots' checked
+* spring-plugins-release - url = http://repo.spring.io/plugins-release, 'Handle Releases' checked
+* spring-plugins-snapshot - url = http://repo.spring.io/plugins-snapshot, 'Handle Snapshots' checked
+* spring-release - url = http://repo.spring.io/release, 'Handle Releases' checked
+* spring-snapshot - url = http://repo.spring.io/snapshot, 'Handle Snapshots' checked
 
 #### Virtual Repositories
 
-libs-release - selected repos: libs-release-local, ext-release-local, remote-repos
-libs-snapshot - selected repos: libs-snapshot-local, ext-snapshot-local, remote-repos
-plugins-release - selected repos: plugins-release-local, ext-release-local, remote-repos
-plugins-snapshot - selected repos: plugins-snapshot-local, ext-snapshot-local, remote-repos
-remote-repos - selected repos: jcenter, spring-plugins-snapshot, spring-plugins-release, spring-release, spring-milestone, spring-snapshot, repository.jboss.org, conjars.org
+* libs-release - selected repos: libs-release-local, ext-release-local, remote-repos
+* libs-snapshot - selected repos: libs-snapshot-local, ext-snapshot-local, remote-repos
+* plugins-release - selected repos: plugins-release-local, ext-release-local, remote-repos
+* plugins-snapshot - selected repos: plugins-snapshot-local, ext-snapshot-local, remote-repos
+* remote-repos - selected repos: jcenter, spring-plugins-snapshot, spring-plugins-release, spring-release, spring-milestone, spring-snapshot, repository.jboss.org, conjars.org
 
 ### Setting up the Database
 
