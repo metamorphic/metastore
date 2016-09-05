@@ -193,7 +193,6 @@ processed_files/*
 public
 backup-libs
 fixtures
-database
 data
 queries
 src/main/environments/dev/*.properties
