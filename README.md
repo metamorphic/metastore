@@ -1,5 +1,17 @@
 # Metastore and dependencies
 
+![Home](assets/metastore_home.jpg)
+
+![New Event Wizard](assets/event_wizard.jpg)
+
+![Create File Dataset](assets/file_dataset.jpg)
+
+![Create Event Type](assets/event_type.jpg)
+
+![Create Feature Type](assets/feature_type.jpg)
+
+Click here to see [demo](http://54.174.248.59:8080/).
+
 * metastore - metadata respository. one of its functions is to drive ingest into the event log.
 * cxp-ingest - Spring Batch module to ingest a delimited file into the event log using metadata from the metastore. custom column and row delimiters may be used. (depends on cxp-transform, cxp-batch-io)
 * cxp-json-ingest - Spring Batch module to ingest a JSON file into the event log using metadata from the metastore. (depends on cxp-transform, cxp-batch-io)
@@ -13,7 +25,7 @@
 * id-mapping-ingest (untested) - Spring Batch modeule to ingest customer-id mapping ``
 * web-analysis - sample code using Spark to ingest omniture data into an event log, generate features from the log using Spark and SparkR, and pivot into feature vectors that can be queried using HAWQ.
 
-![](assets/components.png)
+![Components](assets/components.png)
 
 ## Building Projects
 
