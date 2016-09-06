@@ -1,5 +1,7 @@
 # Metastore and dependencies
 
+Click here to see [demo](http://54.174.248.59:8080/).
+
 ![Home](assets/metastore_home.jpg)
 
 ![New Event Wizard](assets/event_wizard.jpg)
@@ -9,8 +11,6 @@
 ![Create Event Type](assets/event_type.jpg)
 
 ![Create Feature Type](assets/feature_type.jpg)
-
-Click here to see [demo](http://54.174.248.59:8080/).
 
 * metastore - metadata respository. one of its functions is to drive ingest into the event log.
 * cxp-ingest - Spring Batch module to ingest a delimited file into the event log using metadata from the metastore. custom column and row delimiters may be used. (depends on cxp-transform, cxp-batch-io)
