@@ -73,6 +73,7 @@
     <output url="file://$PROJECT_DIR$/out" />
   </component>
   <component name="SqlDialectMappings">
+    <file url="file://$PROJECT_DIR$/database/cxpdev.sql" dialect="PostgreSQL" />
     <file url="file://$PROJECT_DIR$/database/fk_constraints.sql" dialect="PostgreSQL" />
     <file url="file://$PROJECT_DIR$/database/metastore_ddl.sql" dialect="PostgreSQL" />
   </component>
