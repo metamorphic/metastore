@@ -348,3 +348,10 @@ REFERENCES cxp.events (customer_id_type_id, customer_id, event_type_id, ts, even
 ON DELETE NO ACTION
 ON UPDATE NO ACTION
 NOT DEFERRABLE;
+
+ALTER TABLE meta.feature_types ADD CONSTRAINT data_types_feature_types_fk
+FOREIGN KEY (data_type_id)
+REFERENCES meta.data_types (data_type_id)
+ON DELETE NO ACTION
+ON UPDATE NO ACTION
+NOT DEFERRABLE;

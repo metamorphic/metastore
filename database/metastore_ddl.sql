@@ -765,6 +765,8 @@ CREATE TABLE meta.feature_types (
 
 ALTER SEQUENCE meta.feature_types_feature_type_id_seq OWNED BY meta.feature_types.feature_type_id;
 
+ALTER TABLE meta.feature_types ADD COLUMN data_type_id INTEGER;
+
 
 CREATE TABLE meta.feature_type_dependencies (
   independent_feature_type_id INTEGER NOT NULL,
