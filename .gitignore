@@ -201,3 +201,4 @@ src/main/environments/aws/
 src/main/environments/heroku/
 .env
 docs
+deployto-aws.sh
