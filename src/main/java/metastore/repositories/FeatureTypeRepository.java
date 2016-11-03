@@ -9,8 +9,6 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.data.rest.core.annotation.RestResource;
 
-import java.util.List;
-
 /**
  * @author Mark Moloney <markmo @ metamorphic.io>
  *         Copyright 2015
@@ -18,26 +16,32 @@ import java.util.List;
 @RepositoryRestResource(collectionResourceRel = "feature-types", path = "feature-types")
 public interface FeatureTypeRepository extends PagingAndSortingRepository<FeatureType, Long> {
 
+    // It seems you can have only one repository per entity type
+    //http://stackoverflow.com/questions/36112451/multiple-repositories-for-the-same-entity-in-spring-data-rest
+    @RestResource(path = "all", rel = "all")
+    @Query("select f from FeatureType f")
+    Iterable<FeatureType> findAllNoPage();
+
     @RestResource(path = "filter", rel = "filter")
     Page<FeatureType> findByNameContainingIgnoreCase(@Param("q") String name, Pageable pageable);
 
     @RestResource(path = "by-column-name", rel = "by-column-name")
-    List<FeatureType> findByColumnNameIgnoreCase(@Param("name") String name);
+    Iterable<FeatureType> findByColumnNameIgnoreCase(@Param("name") String name);
 
     @RestResource(path = "by-tag-name", rel = "by-tag-name")
     @Query("select f from FeatureType f join f.tags t where t.name = :name")
-    List<FeatureType> findByTagName(@Param("name") String name);
+    Iterable<FeatureType> findByTagName(@Param("name") String name);
 
     @RestResource(path = "by-tag-id", rel = "by-tag-id")
     @Query("select f from FeatureType f join f.tags t where t.id = :id")
-    List<FeatureType> findByTagId(@Param("id") Integer id);
+    Iterable<FeatureType> findByTagId(@Param("id") Integer id);
 
     @RestResource(path = "by-family-name", rel = "by-family-name")
     @Query("select f from FeatureType f join f.featureFamilies ff where ff.name = :name")
-    List<FeatureType> findByFamilyName(@Param("name") String name);
+    Iterable<FeatureType> findByFamilyName(@Param("name") String name);
 
     @RestResource(path = "by-family-id", rel = "by-family-id")
     @Query("select f from FeatureType f join f.featureFamilies ff where ff.id = :id")
-    List<FeatureType> findByFamilyId(@Param("id") Integer id);
+    Iterable<FeatureType> findByFamilyId(@Param("id") Integer id);
 
 }
