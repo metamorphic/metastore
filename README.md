@@ -96,3 +96,32 @@ If a project dependency has been updated, the build command may need to force re
 Some projects, such as this, depend on artifacts from other metamorphic projects, which are not in a public repo. These projects must be published to Artifactory, so they can be resolved in dependent projects. To publish a project to Artifactory, use the following command:
 
     ./gradlew artifactoryPublish
+
+
+### Setting up the UI
+ 
+Clone the [metaform](https://github.com/metamorphic/metaform) project into its own top directory
+
+    git clone https://github.com/metamorphic/metaform.git
+    
+    cd metaform
+    npm install
+    bower install
+    ./node_modules/gulp/bin/gulp.js react
+
+You may need to install bower
+
+    npm install -g bower
+
+The process above creates compiled JavaScript files under `lib`.
+
+Copy the `lib` directory to the metastore project under `metastore/ui/node_modules/metaform`.
+
+Change directory to `metastore/ui` and run
+
+    npm install
+    bower install
+    ./node_modules/gulp/bin/gulp.js
+
+The compiled UI should be created under `metastore/public`. Spring Boot will serve static assets from the `public`
+directory by default.

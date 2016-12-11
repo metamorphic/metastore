@@ -509,7 +509,7 @@ public class FileUploadController implements InitializingBean {
                 EventPropertyType propertyType = new EventPropertyType();
                 propertyType.setName(propertyTypeName);
                 propertyType.setDescription("Automatically created from import of " + datasetName);
-                propertyType.setValueType(valueType);
+//                propertyType.setValueType(valueType);
                 propertyType.setMappingExpression("$." + columnName);
                 fileColumn.addEventPropertyType(propertyType);
 
@@ -652,7 +652,7 @@ public class FileUploadController implements InitializingBean {
                 EventPropertyType propertyType = new EventPropertyType();
                 propertyType.setName(propertyTypeName);
                 propertyType.setDescription("Automatically created from import of " + datasetName);
-                propertyType.setValueType(valueType);
+//                propertyType.setValueType(valueType);
                 propertyType.setMappingExpression("$." + columnName);
                 fileColumn.addEventPropertyType(propertyType);
 
@@ -828,7 +828,7 @@ public class FileUploadController implements InitializingBean {
                     propertyType = new EventPropertyType();
                     propertyType.setName(propertyTypeName);
                     propertyType.setDescription("Automatically created from import of " + name);
-                    propertyType.setValueType(valueType);
+//                    propertyType.setValueType(valueType);
                     propertyType.setMappingExpression("#this['" + columnName + "']");
 //                    }
                     fileColumn.addEventPropertyType(propertyType);
@@ -954,7 +954,7 @@ public class FileUploadController implements InitializingBean {
 
             propertyType = new EventPropertyType();
             propertyType.setName(propertyTypeName);
-            propertyType.setValueType(valueType);
+//            propertyType.setValueType(valueType);
             propertyType.setMappingExpression("#this['" + columnName + "']");
 //            }
             fileColumn.addEventPropertyType(propertyType);
@@ -1139,7 +1139,7 @@ public class FileUploadController implements InitializingBean {
             propertyType = new EventPropertyType();
             propertyType.setName(propertyTypeName);
             propertyType.setDescription("Automatically created from import of " + datasetName);
-            propertyType.setValueType(valueType);
+//            propertyType.setValueType(valueType);
             propertyType.setMappingExpression("#this['" + columnName + "']");
 //            }
             fileColumn.addEventPropertyType(propertyType);

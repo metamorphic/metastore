@@ -14,8 +14,8 @@ public interface EventPropertyTypeClientProjection {
 
     String getName();
 
-    @Value("#{target.valueType?.name}")
-    String getValueTypeName();
+//    @Value("#{target.valueType?.name}")
+//    String getValueTypeName();
 
     @Value("#{target.securityClassification?.name}")
     String getSecurityClassificationName();

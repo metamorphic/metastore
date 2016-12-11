@@ -14,11 +14,11 @@ public interface EventPropertyTypeGridProjection {
 
     String getName();
 
-    @Value("#{target.valueType?.name}")
-    String getValueTypeName();
+//    @Value("#{target.valueType?.name}")
+//    String getValueTypeName();
 
-    @Value("#{target.valueType?.id}")
-    Integer getValueTypeId();
+//    @Value("#{target.valueType?.id}")
+//    Integer getValueTypeId();
 
     @Value("#{target.securityClassification?.name}")
     String getSecurityClassificationName();

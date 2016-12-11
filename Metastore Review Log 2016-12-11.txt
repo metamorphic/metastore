@@ -1,0 +1,480 @@
+# Metastore Review Log
+
+Time: Sunday morning, 11/12/2016
+
+Started from last committed version (f6341f1) in metamorphic, to take a fresh look at issues.
+
+1. UI uses an underlying React framework called Metaform. This had been updated to work with an authenticated app. Metastore does not have authentication yet.
+
+Made the following change to metaform/src/js/services/forms-service.js starting line 315:
+
+* commented out lines 315-334
+* added line 335
+
+// var mod = req.method != 'GET';
+// var sessionId = localStorage.getItem('auth-token');
+// if (sessionId) {
+//   req.set('x-auth-token', sessionId);
+//   mod ? csrf(send) : send();
+// } else {
+//   // get session id
+//   var credentials = global.credentials;
+//   request.get(apiBaseURL + '/token')
+//     .auth(credentials.username, credentials.password)
+//     .end(function (err, res) {
+//       if (err) {
+//         reject(err);
+//       } else {
+//         token = JSON.parse(res.text);
+//         req.set('x-auth-token', token);
+//         mod ? csrf(send) : send();
+//       }
+//     });
+// }
+send();
+
+Tech debt TODO: add some form of config to Metaform to work with unauthenticated apps.
+
+2. The `dataset` property of class `FileColumn` in project metamodel had changed from `fileDataset`, and the `datasource` property of class `FileDataset` had changed from `fileDataSource`. This required the following changes in project metastore:
+
+* The form schema for `file-column` must be updated in two places (under properties, and under form) to change the reference from `fileDataset` to `dataset`
+* The form schema for `file-dataset` must be updated in two places (under properties, and under form) to change the reference from `fileDataSource` to `dataSource`
+
+Both of these changes can be made through the app.
+
+The database setup script must also be updated.
+
+Also, the entity projections in project metastore must be updated, under metastore/src/main/java/metastore/models/
+
+* FileDatasetGridProjection
+* FileDatasetClientProjection
+
+`FileColumnGridProjection` and `FileColumnClientProjection` had already been updated.
+
+3. Fetching event-property-types was resulting in this error:
+
+{"timestamp":1481412085567,"status":500,"error":"Internal Server Error","exception":"org.springframework.http.converter.HttpMessageNotWritableException","message":
+"Could not write content: Detected multiple association links with same relation type!
+Disambiguate association @javax.persistence.ManyToOne(fetch=EAGER, targetEntity=void, cascade=[], optional=true)
+@javax.persistence.JoinColumn(insertable=true, unique=false, referencedColumnName=, columnDefinition=,
+  name=value_type_id, updatable=true, nullable=true, table=,
+  foreignKey=@javax.persistence.ForeignKey(value=CONSTRAINT, foreignKeyDefinition=, name=))
+
+private metastore.models.ValueType metastore.models.DataColumn.valueType using @RestResource!
+  (through reference chain: org.springframework.hateoas.PagedResources[\"_embedded\"]->
+    java.util.UnmodifiableMap[\"event-property-types\"]->java.util.ArrayList[0]);
+  nested exception is com.fasterxml.jackson.databind.JsonMappingException:
+    Detected multiple association links with same relation type!
+    Disambiguate association @javax.persistence.ManyToOne(fetch=EAGER, targetEntity=void, cascade=[], optional=true)
+    @javax.persistence.JoinColumn(insertable=true, unique=false, referencedColumnName=, columnDefinition=,
+      name=value_type_id, updatable=true, nullable=true, table=,
+      foreignKey=@javax.persistence.ForeignKey(value=CONSTRAINT, foreignKeyDefinition=, name=))
+    private metastore.models.ValueType metastore.models.DataColumn.valueType using @RestResource!
+      (through reference chain: org.springframework.hateoas.PagedResources[\"_embedded\"]->
+        java.util.UnmodifiableMap[\"event-property-types\"]->java.util.ArrayList[0])","path":"/api/event-property-types"}
+
+Don't yet know the reason. Simplest fix was to comment out the `valueType` property as it isn't being used by a system consumer, and we also have `dataType` for business metadata.
+
+In project metamodel, comment out lines 58-69 in `metastore.models.EventPropertyType`.
+
+//    public ValueType getValueType() {
+//        return valueType;
+//    }
+
+//    public void setValueType(ValueType valueType) {
+//        this.valueType = valueType;
+//    }
+
+//    public String getValueTypeName() {
+//        if (valueType == null) return null;
+//        return valueType.getName();
+//    }
+
+This will require corresponding changes in project metastore in `metastore.controllers.FileUploadController`.
+
+Comment out lines 512, 655, 831, 957, 1142
+
+Tech Debt TODO: Identify underlying cause - most likely a Hibernate constraint that requires a workaround or different approach.
+
+4. There is already a facility to manually create a new column on the 'File columns Drilldown' view from the 'File datasets' page.
+
+Something to be aware of however, is that the 'Property Types' dropdown is fetching the list of all property types (at least the first 999), and when eventually returning, it is causing the form to reset. This means eager data entry might be lost, resulting in a failed form submission if the user does not realize that some fields (that have scrolled off the top) are now missing.
+
+Suggested workaround for now is to remove the `propertyTypes` field from the form schema definition. (From the main menu, select 'Configuration' > 'Form Schemas', and edit 'file-column'. Remove the 'eventPropertyTypes' entry in two places - under 'properties' and 'form'. The database setup script must be updated as well to prevent the form schema definition being reinstated when the system is redeployed.)
+
+Tech debt TODO: Review design - the above workaround may be a sensible permanent fix as associating columns to 'event property types' in this way may not make sense.
+
+In general, the whole association of 'event property types' to 'file columns', and hence to 'file datasets' is very flexible at the cost of complexity. A custom set of UI pages is required to hide this complexity, or trade-off some flexibility.
+
+5. To add the ability to manually create a new event-property-type:
+
+Property-types are not directly linked to a an event-type. They are indirectly associated:
+
+    event_property_types >-< columns >-- dataset >-< event_types
+
+It may be possible to maintain a direct link from event_property_types >-- event_types. This pattern would be similar to the relationship between data_columns and datasets.
+
+The following attempts to use the existing indirect linkage. (As changing the database schema may have unintended consequences, which will require more testing to validate.)
+
+Firstly, we'll enable bidirectional persist on the many-to-many relationship between a column and event-property-type:
+
+* In project metamodel, change the `columns` property on `metastore.models.EventPropertyType` (line 39) to:
+
+    @ManyToMany(mappedBy = "eventPropertyTypes", cascade = CascadeType.PERSIST)
+    @JsonProperty(access = Access.WRITE_ONLY)
+    private List<FileColumn> fileColumns = new ArrayList<FileColumn>();
+
+This is the inverse (non-owning) side of the relationship. `CascadeType.PERSIST` saves the association to column along with this property. `Access.WRITE_ONLY` is a Jackson feature (since version 2.6.0) that specifies this property can participate in deserialization, but not serialization. (Otherwise, we'd cause a stack overflow when serializing a bidirectional relationship.)
+
+Changing the type to a concrete type `FileColumn` from an abstract type `DataColumn` is necessary to avoid the following error:
+
+    com.fasterxml.jackson.databind.JsonMappingException: Can not construct instance of metastore.models.DataColumn, problem: abstract types either need to be mapped to concrete types, have custom deserializer, or be instantiated with additional type information
+
+As the error suggests, there is another solution to this problem, such as supplying additional type information on the annotation. Changing the type seemed the simplest solution.
+
+Tech debt TODO: This solution may break defining events using columns from table sources. However, at present, only file columns are used.
+
+* Add/modify the relevant getters and setters to `metastore.models.EventPropertyType`:
+
+    public List<FileColumn> getFileColumns() {
+        return fileColumns;
+    }
+
+    public void setFileColumns(List<FileColumn> fileColumns) {
+        List<FileColumn> toRemove = new ArrayList<>(this.fileColumns);
+        for (FileColumn col : fileColumns) {
+            if (!col.getEventPropertyTypes().contains(this)) {
+                col.addEventPropertyType(this);
+            }
+            toRemove.remove(col);
+        }
+        for (FileColumn col : toRemove) {
+            if (col.getEventPropertyTypes() != null) {
+                col.getEventPropertyTypes().remove(this);
+            }
+        }
+        this.fileColumns = fileColumns;
+    }
+
+    public String getFirstDatasetName() {
+        if (fileColumns == null || fileColumns.isEmpty()) return null;
+        FileDataset fileDataset = (fileColumns.get(0)).getDataset();
+        if (fileDataset == null) return null;
+        return fileDataset.getName();
+    }
+
+The setter is interesting. We're on the inverse side of the many-to-many. Only the owning side will persist associations. Therefore, we need to manage building (or removing) the associations manually.
+
+An alternative solution could be to swap the annotations to make `EventPropertyType` the owner of the column-to-event-property-type association. However, without further testing, this might break the automated metadata extraction from sample files functionality, which builds from the column side.
+
+The other change, related to changing to a concrete type, is moving the code for the other side of the association from the `DataColumn` to `FileColumn`. The following code is moved to `metastore.models.FileColumn`:
+
+    @ManyToMany(cascade = CascadeType.PERSIST)
+    @JoinTable(
+            name = "event_property_types_columns", schema = "meta",
+            joinColumns = @JoinColumn(name = "column_id"),
+            inverseJoinColumns = @JoinColumn(name = "property_type_id")
+    )
+    private List<EventPropertyType> eventPropertyTypes = new ArrayList<EventPropertyType>();
+
+    public List<EventPropertyType> getEventPropertyTypes() {
+        return eventPropertyTypes;
+    }
+
+    public void setEventPropertyTypes(List<EventPropertyType> eventPropertyTypes) {
+        this.eventPropertyTypes = eventPropertyTypes;
+    }
+
+    public String getEventPropertyTypesId() {
+        if (eventPropertyTypes == null) {
+            return null;
+        }
+        int n = eventPropertyTypes.size();
+        String[] ids = new String[n];
+        for (int i = 0; i < n; i++) {
+            ids[i] = eventPropertyTypes.get(i).getId().toString();
+        }
+        if (n == 0) {
+            return null;
+        } else {
+            StringBuilder sb = new StringBuilder();
+            for (String id : ids) {
+                sb.append(id).append(',');
+            }
+            return sb.substring(0, sb.length() - 1);
+        }
+    }
+
+    public String getEventPropertyTypesName() {
+        if (eventPropertyTypes == null) {
+            return null;
+        }
+        int n = eventPropertyTypes.size();
+        String[] names = new String[n];
+        for (int i = 0; i < n; i++) {
+            names[i] = eventPropertyTypes.get(i).getName();
+        }
+        if (n == 0) {
+            return null;
+        } else {
+            StringBuilder sb = new StringBuilder();
+            for (String name : names) {
+                sb.append(name).append(',');
+            }
+            return sb.substring(0, sb.length() - 1);
+        }
+    }
+
+    public void addEventPropertyType(EventPropertyType eventPropertyType) {
+        if (eventPropertyTypes == null) {
+            eventPropertyTypes = new ArrayList<EventPropertyType>();
+        }
+        eventPropertyTypes.add(eventPropertyType);
+    }
+
+We also need to enable the bidirectional mapping of event-types to datasets. (The original has a unidirectional mapping from dataset to event-type.) In `metastore.models.EventType`, add the following property:
+
+    @ManyToMany(mappedBy = "eventTypes")
+    @JsonIgnore
+    private List<Dataset> datasets = new ArrayList<Dataset>();
+
+    public List<Dataset> getDatasets() {
+        return datasets;
+    }
+
+    public void setDatasets(List<Dataset> datasets) {
+        this.datasets = datasets;
+    }
+
+    public Long getPrimaryDatasetId() {
+        if (datasets.isEmpty()) {
+            return null;
+        }
+        return datasets.get(0).getId();
+    }
+
+The reason for the last getter will become apparent later.
+
+The schema was designed to support a many-to-many relationship between event-types and datasets. However, in the current process, only one dataset to many event-types is supported. That is, we can extract more than one event-type from a given record, but not use multiple datasets to define an event. (A workaround is to join multiple datasets and treat the joined dataset as a new dataset.)
+
+This last getter is returning the id of the first (and generally only) dataset.
+
+Back in project metastore, we need to update `EventPropertyTypeClientProjection` and `EventPropertyTypeGridProjection`, under metastore/src/main/java/metastore/models/, to comment out any references to `valueType`.
+
+In `EventTypeGridProjection`, add the following abstract method:
+
+    @Value("#{target.primaryDatasetId}")
+    Long getDatasetId();
+
+This makes the `datasetId` available to the UI code below.
+
+To populate the 'Event property types Drilldown' view from the 'Event types' page:
+
+* Uncomment the following method and annotations:
+
+    @RestResource(path = "by-dataset", rel = "by-dataset")
+    @Query(value = "select * from cxp.event_property_types t join meta.event_property_types_columns tc on tc.property_type_id = t.property_type_id join meta.data_columns c on c.column_id = tc.column_id where c.dataset_id = :id", nativeQuery = true)
+    Page<EventPropertyType> findByDatasetId(@Param("datasetId") Long id, Pageable pageable);
+
+The reason this was probably commented in the first place is the following error when run:
+
+    org.springframework.data.jpa.repository.query.InvalidJpaQueryMethodException: Cannot use native queries with dynamic sorting and/or pagination
+
+A native query is a regular SQL query (as specified in the @Query annotation), which, as the error says, is not supported when using pagination.
+
+Therefore, change the query to use Hibernate Query Language (HQL):
+
+    @Query(value = "select t from EventPropertyType t join t.fileColumns c where c.dataset.id = :datasetId")
+
+Notice the change from `t.columns` to `t.fileColumns` to reflect the earlier change.
+
+Altogether, the changed lines should be:
+
+    @RestResource(path = "by-dataset", rel = "by-dataset")
+    @Query(value = "select t from EventPropertyType t join t.fileColumns c where c.dataset.id = :datasetId")
+    Page<EventPropertyType> findByDatasetId(@Param("datasetId") Long id, Pageable pageable);
+
+This will allow us to find property-types by dataset id.
+
+Then, in the UI - metastore/ui/src/js/components/metagrid.js, replace rows 337-342 with:
+
+    return (
+      <Link href={'/grid/event-property-type/' + row.name + '/by-dataset/datasetId=' + row.datasetId}
+            title="Show Properties">
+        <span className="fa fa-columns" aria-hidden="true"></span>
+      </Link>
+    );
+
+Remove the `valueTypeName` property from the projection list under the `name === 'event-property-type'` match just below:
+
+    } else if (name === 'event-property-type') {
+      view = 'grid';
+      filter = filter || 'filter';
+      projection = ['id', 'name']; // from projection = ['id', 'name', 'valueTypeName'];
+
+Now, if we click on the 'Drilldown' icon on a row from the 'Event types' grid, we'll see the property-types for that event. There is already a function to manually create a new property type.
+
+However, it only creates an unlinked property-type. We'll now extend the functionality to link a new property-type to an event-type via a column.
+
+Its easy enough to add column to the property-type form. (Strictly, more than one column can be associated.) We modify the form schema for 'event-property-type'. Add the following entries.
+
+First, under "properties":
+
+    "fileColumns": {
+      "title": "Column",
+      "description": "Associated column",
+      "type": "array",
+      "items": {
+        "$ref": "file-column.json"
+      }
+    },
+
+Second, under "form":
+
+    "fileColumns": {
+      "label": "name",
+      "source": "$ds1url/file-columns",
+      "type": "multiselect"
+    },
+
+We now see a list of columns in the 'Column' multiselect field. The issue is that we see every column. What we want is to limit the columns to those belonging to the dataset linked to this event-type (using the primary datasetId we created as a property on `EventPropertyTypeGridProjection` above.) In other words, we want to change the form schema under "form" to:
+
+    "fileColumns": {
+      "label": "name",
+      "source": "$ds1url/file-columns/search/by-dataset?$filterParam",
+      "type": "multiselect"
+    },
+
+Where $filterParam is replaced with the same filter as used in the URL to navigate to this Drilldown view:
+
+    http://<baseURL>/grid/event-property-type/CAMPAIGN_DETAILS_20150412_SAMPLE.txt/by-dataset/datasetId=3
+
+That is, limit the list of columns to the dataset with id=3.
+
+Unfortunately, the metaform framework did not support this. A view this complex would typically be created as a custom view. However, with limited time, it was quicker to enhance the framework, and this feature could be generally useful.
+
+The following changes were required to project metaform.
+
+* There is a function called `getKeyForSource` in src/js/components/form/list.js, src/js/components/form/select.js, and src/js/services/forms-service.js. Update to get the entity-key from the source URL where the key might be in the middle of the URL instead of the end.
+
+    function getKeyForSource(source) {
+      if (source) {
+        var match = source.match(/[^\/]+\/([^\/]+)(\/.*)?/);
+        return match[1];
+      }
+      return source;
+    }
+
+For example, extract `file-columns` from `$ds1url/file-columns/search/by-dataset?$filterParam`
+
+* In src/js/components/grid/grid.js, pass the `filterParam` into the `ModalForm` component (line 416):
+
+    React.render(
+      React.createElement(ModalForm, {
+        title: title,
+        name: entity,
+        value: item,
+        autoshow: true,
+        filterParam: this.props.filterParam,
+        onHidden: function () {
+          React.unmountComponentAtNode(container);
+        },
+        onSubmitted: this.handleSubmission
+      }), container);
+
+* In src/js/components/form/modal-form.js, pass the `filterParam` into the `Form` component (line 40):
+
+    render: function () {
+      return(
+        <Modal title={this.props.title}>
+          <Form name={this.props.name} formType="vertical" value={this.props.value}
+            filterParam={this.props.filterParam}
+            onSubmitted={this.handleSubmission}/>
+        </Modal>
+      );
+    }
+
+* In src/js/components/form/form.js, pass the `filterParam` from the render method through to `Select` component creation:
+
+line 107:
+    var fields = createElements(schema, formType, value, this.props.filterParam);
+
+line 139:
+    function createElements(schema, formType, value, filterParam) {
+
+line 216:
+    return _.mapObject(function (k, v) {
+      return createField(formType, value, formOptions, k, v, filterParam);
+    }, properties);
+
+line 224 (extend method and add to `opts`):
+    function createField(formType, value, formOptions, k, v, filterParam) {
+      var opts = $.extend({}, {key: k, field: k, value: value[k], formType: formType, filterParam: filterParam}, v);
+
+* In src/js/components/form/select.js, replace the `$filterParam` variable in the field source URL (line 36):
+
+    componentDidMount: function () {
+      if (!this.props.enum && !this.props.async) {
+        var source = this.props.source.replace('$filterParam', this.props.filterParam);
+        AppActions.getSelectOptions(source);
+      }
+    },
+
+* In src/js/services/forms-service.js, because we're adding an unexpected query param, modify the code that is adding another query param to restrict all queries to 999 items (line 162):
+
+    var src = source.replace('$ds1url', apiBaseURL);
+    if (async) {
+      src += q;
+    }
+    if (src.indexOf('size=') === -1) {
+      if (src.indexOf('?') === -1) {
+        src += '?size=999';
+      } else {
+        src += '&size=999';
+      }
+    }
+    get(resolve, reject, src, {
+
+* Rebuild project metaform:
+
+    ./node_modules/gulp/bin/gulp.js react
+
+And copy to project metastore:
+
+    cp -r lib <path_to>/metastore/ui/node_modules/metaform/
+
+* Rebuild the metastore UI (from metastore/ui):
+
+    ./node_modules/gulp/bin/gulp.js
+
+* And finally, rebuild metastore:
+
+    ./gradlew clean -Penv=local build --refresh-dependencies
+
+Don't forget to add `--refresh-dependencies` to pull in any updated metamodel JAR.
+
+To delete property types from the UI, we need to relax a foreign key constraint, which can be done from a SQL client and in the database setup script:
+
+    ALTER TABLE meta.event_property_types_columns
+      DROP CONSTRAINT event_property_types_event_property_types_columns_fk
+
+Also, using my existing test database instance, the system complained of a missing sequence (although it was in the DDL):
+
+    CREATE SEQUENCE meta.event_property_types_property_type_id_seq
+      START WITH 1
+      INCREMENT BY 1
+      NO MINVALUE
+      NO MAXVALUE
+      CACHE 1;
+
+    SELECT setval('cxp.event_property_types_property_type_id_seq', (SELECT MAX(property_type_id) FROM cxp.event_property_types));
+
+(The schema names above will need to be changed. Naden has merged schemas into a single schema called 'metastore'.)
+
+
+We now have the ability to:
+
+1. Manually define new columns for a file-dataset
+2. Manually define new property-types for an event-type
+
+Tech debt TODO: All forms don't have validation, which means that missing required fields will result in an error. Add form validation to prevent form submission until all required fields have been correctly input.

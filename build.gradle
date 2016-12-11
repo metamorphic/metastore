@@ -109,7 +109,7 @@ dependencies {
     compile 'commons-io:commons-io:2.4'
     compile 'com.zaxxer:HikariCP-java6:2.3.8'
     compile 'com.foundationdb:fdb-sql-parser:1.6.1'
-    compile 'com.fasterxml.jackson.datatype:jackson-datatype-hibernate4:2.4.6'
+    compile 'com.fasterxml.jackson.datatype:jackson-datatype-hibernate4:2.6.0'
     compile 'org.eclipse.mylyn.github:org.eclipse.egit.github.core:2.1.5'
     //compile 'org.springframework.xd:spring-xd-rest-client:1.0.4.RELEASE' // causing a conflict with elasticsearchClient
     testCompile group: 'junit', name: 'junit', version: '4.11'

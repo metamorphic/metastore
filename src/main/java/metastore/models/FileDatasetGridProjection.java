@@ -24,11 +24,11 @@ public interface FileDatasetGridProjection {
 
     String getCustomerIdMappingRulesId();
 
-    @Value("#{target.fileDataSource?.name}")
-    String getFileDataSourceName();
+    @Value("#{target.dataSource?.name}")
+    String getDataSourceName();
 
-    @Value("#{target.fileDataSource?.id}")
-    Long getFileDataSourceId();
+    @Value("#{target.dataSource?.id}")
+    Long getDataSourceId();
 
     @Value("#{target.securityClassification?.name}")
     String getSecurityClassificationName();

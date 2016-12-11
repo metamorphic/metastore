@@ -14,7 +14,7 @@ public interface FileDatasetClientProjection {
 
     String getName();
 
-    FileDataSource getFileDataSource();
+    FileDataSource getDataSource();
 
     FileType getFileType();
 

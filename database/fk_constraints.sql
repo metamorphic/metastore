@@ -286,12 +286,12 @@ ON DELETE NO ACTION
 ON UPDATE NO ACTION
 NOT DEFERRABLE;
 
-ALTER TABLE meta.event_property_types_columns ADD CONSTRAINT event_property_types_event_property_types_columns_fk
-FOREIGN KEY (property_type_id)
-REFERENCES cxp.event_property_types (property_type_id)
-ON DELETE NO ACTION
-ON UPDATE NO ACTION
-NOT DEFERRABLE;
+-- ALTER TABLE meta.event_property_types_columns ADD CONSTRAINT event_property_types_event_property_types_columns_fk
+-- FOREIGN KEY (property_type_id)
+-- REFERENCES cxp.event_property_types (property_type_id)
+-- ON DELETE NO ACTION
+-- ON UPDATE NO ACTION
+-- NOT DEFERRABLE;
 
 ALTER TABLE cxp.events ADD CONSTRAINT dictionary_events_fk
 FOREIGN KEY (event_type_id)

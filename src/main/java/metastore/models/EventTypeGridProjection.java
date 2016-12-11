@@ -18,6 +18,9 @@ public interface EventTypeGridProjection {
 
     String getDescription();
 
+    @Value("#{target.primaryDatasetId}")
+    Long getDatasetId();
+
     @Value("#{target.valueType?.name}")
     String getValueTypeName();
 

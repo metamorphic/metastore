@@ -334,11 +334,17 @@ var Metagrid = React.createClass({
         properties: {
           compute: function (row) {
             var id = row.id;
+            //return (
+            //    <Link href={'/grid/event-property-type/' + row.name + '/by-event-type-and-filter/eventTypeId=' + id}
+            //          title="Show Properties">
+            //      <span className="fa fa-columns" aria-hidden="true"></span>
+            //    </Link>
+            //);
             return (
-                <Link href={'/grid/event-property/' + row.name + '/by-event-type-and-filter/eventTypeId=' + id}
-                      title="Show Properties">
-                  <span className="fa fa-columns" aria-hidden="true"></span>
-                </Link>
+              <Link href={'/grid/event-property-type/' + row.name + '/by-dataset/datasetId=' + row.datasetId}
+                    title="Show Properties">
+                <span className="fa fa-columns" aria-hidden="true"></span>
+              </Link>
             );
           }
         }
@@ -347,7 +353,7 @@ var Metagrid = React.createClass({
     } else if (name === 'event-property-type') {
       view = 'grid';
       filter = filter || 'filter';
-      projection = ['id', 'name', 'valueTypeName'];
+      projection = ['id', 'name'];
 
     } else if (name === 'feature-family') {
       view = 'grid';
